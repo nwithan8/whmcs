@@ -1,7 +1,11 @@
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 from whmcs.exceptions import MissingPermission, APIError
 from whmcs import object_creator
+
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)  # stop warning about insecure connections, we know
 
 param_translations = {
     'product_id': 'pid',
@@ -39,9 +43,10 @@ def _replace_param_names_remove_empty(**params):
 class WebHandler:
     def __init__(self, api):
         self._api = api
+        self._session = requests.Session()
 
     def _post(self, payload):
-        return requests.post(url=self._api.api_url, data=payload, verify=False)
+        return self._session.post(url=self._api.api_url, data=payload, verify=False)
 
     def _build_request_body(self, action: str, **params):
         params = _replace_param_names_remove_empty(**params)
