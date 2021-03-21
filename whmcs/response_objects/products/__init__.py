@@ -1,0 +1,1 @@
+from whmcs.response_objects.products.get_products import Model as GetProducts

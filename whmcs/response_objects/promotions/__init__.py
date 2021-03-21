@@ -1,0 +1,1 @@
+from whmcs.response_objects.promotions.get_promotions import Model as GetPromotions
